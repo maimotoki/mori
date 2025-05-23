@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="stylesheet" href="external.css">
+  <meta charset="UTF-8">
+  <title>LINEスタンププロンプトメーカー</title>
+  
+</head>
+<body>
+
+  <h2>LINEスタンププロンプトメーカー</h2>
+
+  <label>キャラクター種類</label>
+  <select id="character">
+    <option value="パンダ">パンダ</option>
+    <option value="ネコ">ネコ</option>
+    <option value="くま">くま</option>
+    <option value="うさぎ">うさぎ</option>
+    <option value="トラ">トラ</option>
+    <option value="柴犬">柴犬</option>
+  
+  </select>
+
+  <label>キャラクターの色</label>
+  <select id="color">
+    <option value="">選択なし</option>
+    <option value="白">白</option>
+    <option value="黒">黒</option>
+    <option value="茶色">茶色</option>
+    <option value="灰色">灰色</option>
+    <option value="白と黒">白と黒</option>
+    <option value="三毛柄">三毛柄</option>
+    <option value="オレンジ">オレンジ</option>
+    <option value="ピンク">ピンク</option>
+  </select>
+
+  <label>表情</label>
+  <select id="expression">
+    <option value="笑顔">笑顔</option>
+    <option value="怒っている">怒っている</option>
+    <option value="泣いている">泣いている</option>
+    <option value="驚いている">驚いている</option>
+    <option value="無表情">無表情</option>
+    <option value="照れている">照れている</option>
+  </select>
+
+  <label>動作</label>
+  <select id="pose">
+    <option value="手を振っている">手を振っている</option>
+    <option value="座っている">座っている</option>
+    <option value="ジャンプしている">ジャンプしている</option>
+    <option value="寝転んでいる">寝転んでいる</option>
+    <option value="走っている">走っている</option>
+    <option value="おじぎしている">おじぎしている</option>
+    <option value="立っている">立っている</option>
+    <option value="のぞいている">のぞいている</option>
+  </select>
+
+  <label>スタイル</label>
+  <select id="style">
+    <option value="ゆるかわ">ゆるかわ</option>
+    <option value="ポップ">ポップ</option>
+    <option value="デフォルメ">デフォルメ</option>
+    <option value="ミニマル">ミニマル</option>
+    <option value="アニメ調">アニメ調</option>
+  </select>
+
+  <label>背景</label>
+  <select id="background">
+    <option value="背景透過">背景透過</option>
+    <option value="緑背景">緑背景</option>
+    <option value="白背景">白背景</option>
+    <option value="自然の背景">自然の背景</option>
+    <option value="和風の背景">和風の背景</option>
+    <option value="家の背景">家の背景</option>
+  </select>
+
+  <label>表示範囲</label>
+  <select id="composition">
+    <option value="全身">全身</option>
+    <option value="上半身">上半身</option>
+    <option value="顔のみ">顔のみ</option>
+    <option value="横顔">横顔</option>
+    <option value="後ろ姿">後ろ姿</option>
+    <option value="バストアップ">バストアップ</option>
+  </select>
+
+  <label>自由入力（衣装・小物・季節感・感情など）</label>
+  <input type="text" id="custom" placeholder="例：赤いマフラー、魚を持っている、春の雰囲気、嬉しそうに">
+
+  <button onclick="generatePrompt()">プロンプトを作成</button>
+  <button onclick="clearFields()">クリア</button>
+
+  <div id="result"></div>
+
+  <script>
+    const translations = {
+      "パンダ": "Panda",
+      "ネコ": "Cat",
+      "くま": "Bear",
+      "うさぎ": "Rabbit",
+      "トラ": "Tiger",
+      "柴犬": "Shiba Inu",
+      "白": "white",
+      "黒": "black",
+      "茶色": "brown",
+      "灰色": "gray",
+      "白と黒": "white and black",
+      "三毛柄": "calico",
+      "オレンジ": "orange",
+      "ピンク": "pink",
+      "笑顔": "smiling",
+      "怒っている": "angry",
+      "泣いている": "crying",
+      "驚いている": "surprised",
+      "無表情": "expressionless",
+      "照れている": "blushing",
+      "手を振っている": "waving hand",
+      "座っている": "sitting",
+      "ジャンプしている": "jumping",
+      "寝転んでいる": "lying down",
+      "走っている": "running",
+      "おじぎしている": "bowing",
+      "立っている": "standing",
+      "のぞいている": "peeking",
+      "ゆるかわ": "cute and simple",
+      "ポップ": "pop style",
+      "デフォルメ": "chibi style",
+      "ミニマル": "minimalist",
+      "アニメ調": "anime style",
+      "背景透過": "transparent background",
+      "白背景": "white background",
+      "緑背景": "green background",
+      "自然の背景": "nature background",
+      "和風の背景": "japanese-style background",
+      "家の背景": "home background",
+      "全身": "full body",
+      "上半身": "upper body",
+      "顔のみ": "face only",
+      "横顔": "side profile",
+      "後ろ姿": "back view",
+      "バストアップ": "bust-up"
+    };
+
+    function translate(word) {
+      return translations[word] || word;
+    }
+
+    function generatePrompt() {
+      const character = document.getElementById("character").value;
+      const color = document.getElementById("color").value;
+      const expression = document.getElementById("expression").value;
+      const pose = document.getElementById("pose").value;
+      const style = document.getElementById("style").value;
+      const background = document.getElementById("background").value;
+      const composition = document.getElementById("composition").value;
+      const custom = document.getElementById("custom").value.trim();
+
+      const extras = [color, custom, composition].filter(Boolean).join(', ');
+
+      const jp = `${character}, ${expression}, ${pose}, ${style}スタイル, ${background}${extras ? ', ' + extras : ''}, LINEスタンプ用, 高解像度, PNG形式`;
+      const en = `${translate(character)}, ${translate(expression)}, ${translate(pose)}, ${translate(style)} style, ${translate(background)}${extras ? ', ' + extras.split(', ').map(translate).join(', ') : ''}, for LINE sticker, high resolution, PNG format`;
+
+      document.getElementById("result").innerText = jp + "\n" + en;
+    }
+
+    function clearFields() {
+      document.querySelectorAll("select, input[type='text']").forEach(el => {
+        if (el.tagName === "SELECT") {
+          el.selectedIndex = 0;
+        } else {
+          el.value = "";
+        }
+      });
+      document.getElementById("result").innerText = "";
+    }
+  </script>
+
+</body>
+</html>
