@@ -47,3 +47,28 @@ button {
   border-radius: 5px;
   font-family: "Courier New", monospace;
 }
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  select,
+  input[type="number"],
+  input[type="text"] {
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  #result {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+
