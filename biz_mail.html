@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="stylesheet" href="external.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ビジネスメール返信用プロンプトメーカー</title>
+  
+</head>
+<body>
+  <h1>ビジネスメール返信用プロンプトメーカー</h1>
+
+  <label for="purpose">返信の目的：</label>
+  <select id="purpose">
+    <option value="お礼">お礼</option>
+    <option value="謝罪">謝罪</option>
+    <option value="日程調整">日程調整</option>
+    <option value="資料送付">資料送付</option>
+    <option value="お断り">お断り</option>
+  </select>
+
+  <label for="target">相手の立場：</label>
+  <select id="target">
+    <option value="お客様">お客様</option>
+    <option value="上司">上司</option>
+    <option value="同僚">同僚</option>
+    <option value="取引先">取引先</option>
+  </select>
+
+  <label for="tone">文章のトーン：</label>
+  <select id="tone">
+    <option value="丁寧でフォーマル">丁寧でフォーマル</option>
+    <option value="ややカジュアル">ややカジュアル</option>
+    <option value="ビジネス向けに固く">ビジネス向けに固く</option>
+  </select>
+
+  <label for="length">文字数の上限：</label>
+  <input type="number" id="length" min="50" max="1000" value="300">
+
+  <label for="includeSubject">件名を含める：</label>
+  <select id="includeSubject">
+    <option value="はい">はい</option>
+    <option value="いいえ">いいえ</option>
+  </select>
+
+  <button onclick="generatePrompt()">プロンプトを作成</button>
+
+  <div id="result"></div>
+
+  <script>
+    function generatePrompt() {
+      const purpose = document.getElementById("purpose").value;
+      const target = document.getElementById("target").value;
+      const tone = document.getElementById("tone").value;
+      const length = document.getElementById("length").value;
+      const includeSubject = document.getElementById("includeSubject").value;
+
+      let prompt = `あなたはビジネスマナーに詳しいメールライターです。\n「${target}への${purpose}メール」を書いてください。\n文体は${tone}で、${length}文字以内にしてください。`;
+
+      if (includeSubject === "はい") {
+        prompt += "\n件名も含めてください。";
+      }
+
+      document.getElementById("result").textContent = prompt;
+    }
+  </script>
+</body>
+</html>
