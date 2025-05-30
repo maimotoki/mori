@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>メール本文自動生成メーカー</title>
+  <link rel="stylesheet" href="external.css">
+  <style>
+    .copy-btn {
+      background-color: #28a745;
+      transition: background-color 0.3s ease;
+    }
+    .copy-btn.copied {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>メール本文自動生成プロンプト</h1>
+
+  <label for="season">季節：</label>
+  <select id="season">
+    <option value="spring">春</option>
+    <option value="summer">夏</option>
+    <option value="autumn">秋</option>
+    <option value="winter">冬</option>
+  </select>
+
+  <label for="formality">文体：</label>
+  <select id="formality">
+    <option value="formal">フォーマル</option>
+    <option value="casual">カジュアル</option>
+  </select>
+
+  <label for="target">相手の種類：</label>
+  <select id="target">
+    <option value="business">ビジネス関係</option>
+    <option value="friend">友人</option>
+    <option value="customer">お客様</option>
+  </select>
+
+  <label for="body">本文（任意）：</label>
+  <textarea id="body" rows="5" placeholder="本文をここに入力してください..." style="width:100%; padding:8px; font-size:14px;"></textarea>
+
+  <button onclick="generateEmail()">メール本文を作成</button>
+  <button class="copy-btn" onclick="copyEmail(this)">コピー</button>
+
+  <div id="result" style="margin-top: 20px; white-space: pre-wrap;"></div>
+
+  <script>
+    const greetings = {
+      spring: {
+        formal: "春暖の候、貴社ますますご清栄のこととお慶び申し上げます。",
+        casual: "ぽかぽか陽気が続きますね。お元気ですか？"
+      },
+      summer: {
+        formal: "盛夏の候、皆様におかれましては益々ご健勝のことと存じます。",
+        casual: "暑い日が続いていますが、いかがお過ごしですか？"
+      },
+      autumn: {
+        formal: "秋冷の候、貴社ますますご繁栄のこととお喜び申し上げます。",
+        casual: "朝晩涼しくなりましたね。体調は大丈夫ですか？"
+      },
+      winter: {
+        formal: "厳寒の候、皆様のご健康とご多幸を心よりお祈り申し上げます。",
+        casual: "寒い日が続いていますが、お元気ですか？"
+      }
+    };
+
+    const closings = {
+      formal: {
+        business: "今後とも何卒よろしくお願い申し上げます。",
+        friend: "今後とも変わらぬご交誼を賜りますようお願い申し上げます。",
+        customer: "引き続きご愛顧賜りますようお願い申し上げます。"
+      },
+      casual: {
+        business: "どうぞよろしくお願いいたします！",
+        friend: "また連絡するね！",
+        customer: "またのご利用をお待ちしております！"
+      }
+    };
+
+    function generateEmail() {
+      const season = document.getElementById("season").value;
+      const formality = document.getElementById("formality").value;
+      const target = document.getElementById("target").value;
+      const body = document.getElementById("body").value.trim();
+
+      const greeting = greetings[season][formality];
+      const closing = closings[formality][target];
+
+      const fullText = `${greeting}\n\n${body}\n\n${closing}`;
+      document.getElementById("result").innerText = fullText;
+    }
+
+    function copyEmail(button) {
+      const text = document.getElementById("result").innerText;
+      if (!text) {
+        alert("まずはメール本文を作成してください。");
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        button.classList.add("copied");
+        button.textContent = "コピー完了！";
+        setTimeout(() => {
+          button.classList.remove("copied");
+          button.textContent = "コピー";
+        }, 2000);
+      }).catch(() => {
+        alert("コピーに失敗しました。");
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>時候の挨拶プロンプトメーカー</title>
+  <link rel="stylesheet" href="external.css">
+  
+</head>
+<body>
+  <h1>時候の挨拶プロンプト</h1>
+
+  <label for="season">季節：</label>
+  <select id="season">
+    <option value="spring">春</option>
+    <option value="summer">夏</option>
+    <option value="autumn">秋</option>
+    <option value="winter">冬</option>
+  </select>
+
+  <label for="formality">文体：</label>
+  <select id="formality">
+    <option value="formal">フォーマル</option>
+    <option value="casual">カジュアル</option>
+  </select>
+
+  <label for="target">相手の種類：</label>
+  <select id="target">
+    <option value="business">ビジネス関係</option>
+    <option value="friend">友人</option>
+    <option value="customer">お客様</option>
+  </select>
+
+  <button onclick="generateGreeting()">挨拶文を生成</button>
+  <button onclick="copyToClipboard()">コピー</button>
+
+  <div id="result"></div>
+
+  <script>
+    const greetings = {
+      spring: {
+        formal: {
+          business: "春暖の候、貴社ますますご清栄のこととお慶び申し上げます。",
+          friend: "春の訪れを感じる今日この頃、いかがお過ごしですか？",
+          customer: "陽春の折、平素より格別のご高配を賜り厚く御礼申し上げます。"
+        },
+        casual: {
+          business: "だんだんと暖かくなってまいりました。お変わりありませんか？",
+          friend: "ぽかぽか陽気が気持ちいいね！元気にしてる？",
+          customer: "春らしい陽気となりました。いつもありがとうございます。"
+        }
+      },
+      summer: {
+        formal: {
+          business: "盛夏の候、皆様におかれましては益々ご健勝のことと存じます。",
+          friend: "夏本番ですね。体調崩していませんか？",
+          customer: "酷暑の折、平素よりご愛顧賜り厚く御礼申し上げます。"
+        },
+        casual: {
+          business: "暑い日が続いておりますが、どうぞご自愛ください。",
+          friend: "アイスが美味しい季節だね〜元気？",
+          customer: "連日暑さが厳しいですが、いつもご利用いただきありがとうございます。"
+        }
+      },
+      autumn: {
+        formal: {
+          business: "秋冷の候、貴社ますますご繁栄のこととお喜び申し上げます。",
+          friend: "紅葉が綺麗な季節ですね。最近どう？",
+          customer: "秋麗の候、平素よりお引き立ていただき誠にありがとうございます。"
+        },
+        casual: {
+          business: "過ごしやすい季節になりました。お元気でお過ごしでしょうか。",
+          friend: "涼しくなってきたね〜体調に気をつけて！",
+          customer: "秋の風が心地よいですね。いつもありがとうございます。"
+        }
+      },
+      winter: {
+        formal: {
+          business: "厳寒の候、貴社の益々のご発展をお祈り申し上げます。",
+          friend: "寒いけど元気？風邪ひかないようにね！",
+          customer: "年の瀬も押し迫り、ご多忙のことと存じます。平素のご厚情に感謝申し上げます。"
+        },
+        casual: {
+          business: "寒さが厳しくなってまいりました。どうぞご自愛ください。",
+          friend: "こたつが恋しい季節だね！元気にしてる？",
+          customer: "寒い中ご来店いただきありがとうございます。体調にお気をつけて。"
+        }
+      }
+    };
+
+    function generateGreeting() {
+      const season = document.getElementById("season").value;
+      const formality = document.getElementById("formality").value;
+      const target = document.getElementById("target").value;
+
+      const message = greetings[season][formality][target];
+      document.getElementById("result").innerText = message;
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById("result").innerText;
+      if (!text) {
+        alert("まずは挨拶文を生成してください。");
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("クリップボードにコピーしました！");
+      }).catch(() => {
+        alert("コピーに失敗しました。");
+      });
+    }
+  </script>
+</body>
+</html>

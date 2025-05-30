@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="stylesheet" href="external.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINEスタンプ用フレーズプロンプトメーカー</title>
+  
+</head>
+<body>
+  <h1>スタンプフレーズ用プロンプト</h1>
+
+  <label for="character">キャラクタータイプ：</label>
+  <select id="character">
+    <option value="赤ちゃん風">赤ちゃん風</option>
+    <option value="関西弁のツッコミキャラ">関西弁のツッコミキャラ</option>
+    <option value="ビジネスマン">ビジネスマン</option>
+    <option value="ゆるかわキャラ">ゆるかわキャラ</option>
+  </select>
+
+  <label for="tone">トーン：</label>
+  <select id="tone">
+    <option value="かわいく">かわいく</option>
+    <option value="丁寧に">丁寧に</option>
+    <option value="おもしろく">おもしろく</option>
+    <option value="ゆるく">ゆるく</option>
+  </select>
+
+  <label for="count">生成するフレーズ数：</label>
+  <input type="number" id="count" min="1" max="50" value="20">
+
+  <label for="limit">1フレーズの文字数上限：</label>
+  <input type="number" id="limit" min="1" max="20" value="10">
+
+  <label for="theme">フレーズのテーマ：</label>
+  <select id="theme">
+    <option value="日常会話">日常会話</option>
+    <option value="あいさつ">あいさつ</option>
+    <option value="人気のあるフレーズ">人気のあるフレーズ</option>
+    <option value="敬語">敬語</option>
+    <option value="つっこみ">つっこみ</option>
+    <option value="恋愛系">恋愛系</option>
+    <option value="自由形式">自由形式（制限なし）</option>
+  </select>
+
+  <button onclick="generatePrompt()">プロンプトを作成</button>
+  <button onclick="copyToClipboard()">コピー</button>
+
+  <div id="result"></div>
+
+  <script>
+    function generatePrompt() {
+      const character = document.getElementById("character").value;
+      const tone = document.getElementById("tone").value;
+      const count = document.getElementById("count").value;
+      const limit = document.getElementById("limit").value;
+      const theme = document.getElementById("theme").value;
+
+      const prompt = `あなたは${character}のLINEスタンプ作家です。\n${tone}、${theme}をテーマに、使いやすいフレーズを${count}個考えてください。\n1フレーズは${limit}文字以内でお願いします。`;
+
+      document.getElementById("result").textContent = prompt;
+    }
+    function copyToClipboard() {
+  const text = document.getElementById("result").innerText;
+  if (!text) {
+    alert("まずはプロンプトを作成してください。");
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert("クリップボードにコピーしました！");
+  }).catch(() => {
+    alert("コピーに失敗しました。");
+  });
+}
+  </script>
+</body>
+</html>

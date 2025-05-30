@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>結びの挨拶プロンプトメーカー</title>
+  <link rel="stylesheet" href="external.css">
+</head>
+<body>
+  <h1>結びの挨拶プロンプト</h1>
+
+  <label for="formality">文体：</label>
+  <select id="formality">
+    <option value="formal">フォーマル</option>
+    <option value="casual">カジュアル</option>
+  </select>
+
+  <label for="target">相手の種類：</label>
+  <select id="target">
+    <option value="business">ビジネス関係</option>
+    <option value="friend">友人</option>
+    <option value="customer">お客様</option>
+  </select>
+
+  <label for="season">季節に応じた一言（任意）：</label>
+  <select id="season">
+    <option value="">なし</option>
+    <option value="寒さ">寒さが厳しい季節</option>
+    <option value="暑さ">暑さが続く季節</option>
+    <option value="年度末">年度末</option>
+    <option value="年末年始">年末年始</option>
+  </select>
+
+  <button onclick="generateClosing()">結びの挨拶を作成</button>
+  <button onclick="copyToClipboard()">コピー</button>
+
+  <div id="result"></div>
+
+  <script>
+    const closings = {
+      formal: {
+        business: "今後とも何卒よろしくお願い申し上げます。",
+        friend: "今後とも変わらぬお付き合いをお願いいたします。",
+        customer: "引き続きご愛顧賜りますようお願い申し上げます。"
+      },
+      casual: {
+        business: "どうぞよろしくお願いいたします！",
+        friend: "また連絡するね！",
+        customer: "またのご利用をお待ちしております！"
+      }
+    };
+
+    const seasonalPhrases = {
+      "寒さ": "寒さ厳しき折、どうぞご自愛ください。",
+      "暑さ": "暑さが続きますので、体調にはお気をつけください。",
+      "年度末": "お忙しい時期かと存じますが、どうぞご自愛ください。",
+      "年末年始": "良いお年をお迎えください。"
+    };
+
+    function generateClosing() {
+      const formality = document.getElementById("formality").value;
+      const target = document.getElementById("target").value;
+      const season = document.getElementById("season").value;
+
+      let result = closings[formality][target];
+      if (season && seasonalPhrases[season]) {
+        result += "\n" + seasonalPhrases[season];
+      }
+
+      document.getElementById("result").innerText = result;
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById("result").innerText;
+      if (!text) {
+        alert("まずは結びの挨拶を作成してください。");
+        return;
+      }
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("クリップボードにコピーしました！");
+      }).catch(() => {
+        alert("コピーに失敗しました。");
+      });
+    }
+  </script>
+</body>
+</html>

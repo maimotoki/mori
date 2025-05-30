@@ -4,12 +4,12 @@
   <link rel="stylesheet" href="external.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>動物キャラプロンプトメーカー</title>
+  <title>LINEスタンププロンプトメーカー</title>
   
 </head>
 <body>
-<a href="/mori/biz_mail.html">ビジネスメール</a>
-  <h2>動物キャラ生成プロンプト</h2>
+
+  <h1>LINEスタンププロンプトメーカー</h1>
 
   <label>キャラクター種類</label>
   <select id="character">
@@ -37,7 +37,6 @@
 
   <label>表情</label>
   <select id="expression">
-    <option value="">選択なし</option>
     <option value="笑顔">笑顔</option>
     <option value="怒っている">怒っている</option>
     <option value="泣いている">泣いている</option>
@@ -48,7 +47,6 @@
 
   <label>動作</label>
   <select id="pose">
-     <option value="">選択なし</option>
     <option value="手を振っている">手を振っている</option>
     <option value="座っている">座っている</option>
     <option value="ジャンプしている">ジャンプしている</option>
@@ -92,6 +90,7 @@
   <input type="text" id="custom" placeholder="例：赤いマフラー、魚を持っている、春の雰囲気、嬉しそうに">
 
   <button onclick="generatePrompt()">プロンプトを作成</button>
+  <button onclick="copyToClipboard()">コピー</button>
   <button onclick="clearFields()">クリア</button>
 
   <div id="result"></div>
@@ -177,7 +176,42 @@
       });
       document.getElementById("result").innerText = "";
     }
+    function copyToClipboard() {
+  const text = document.getElementById("result").innerText;
+  if (!text) {
+    alert("まずはプロンプトを作成してください。");
+    return;
+  }
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert("クリップボードにコピーしました！");
+  }).catch(() => {
+    alert("コピーに失敗しました。");
+  });
+}
   </script>
+
+
+<hr>
+<div style="text-align:center; margin-top: 40px;">
+  <h3>📂 他のツールに移動</h3>
+  <a href="mori/index.html">
+    <button style="margin: 5px;">🎨 LINEスタンププロンプト（mori）</button>
+  </a>
+  <a href="biz_mail.html">
+    <button style="margin: 5px;">📧 ビジネスメールプロンプト</button>
+  </a>
+  <a href="coment.html">
+    <button style="margin: 5px;">💬 フレーズプロンプト</button>
+  </a>
+  <a href="closing.html">
+    <button style="margin: 5px;">📎 結びの挨拶メーカー</button>
+  </a>
+  <a href="full_mail.html">
+    <button style="margin: 5px;">📄 メール本文自動生成</button>
+  </a>
+</div>
+
 
 </body>
 </html>
